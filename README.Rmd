@@ -5,6 +5,10 @@ date: "02/11/2020"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ## About reviseR
 reviseR is a simple Shiny app that I wrote to help me revise for an ITEC examination.  reviseR randomly selects multiple choice questions to present to you as part of your revision.  The questions and answers are defined in Microsoft Excel workbooks.  reviseR is, and always will be, free for personal use.
 
@@ -83,13 +87,13 @@ The screenshot below shows a sample Questions worksheet.
   
 As you can see, the worksheet contains five columns:
 
-* `Category` defines the category to which the question belongs.  Categories are arbitrary and case-sensitive.
-* `SubCategory` defines the sub-category to which the question belongs.  Sub-categories are arbitrary and case-sensitive.  The same label can be used in multiple Categories.
-* `QuestionID` uniquely identifies the question.  Question IDs must be numeric and *_unique across all workbooks_* loaded in a single reviseR session.  Question IDs need not be integers, but this is recommended.
-* `QuestionText` defines the text that will be presented to the user to pose the question.  The question text must be provided.
-* `HelpText` defines the optional help text that is displayed to the user after they have chosen their answer and clicked the Submit button.
-* `Image` is not currently used
-* `HelpImage` is not currently used
+* Category defines the category to which the question belongs.  Categories are arbitrary and case-sensitive.
+* SubCategory defines the sub-category to which the question belongs.  Sub-categories are arbitrary and case-sensitive.  The same label can be used in multiple Categories.
+* QuestionID uniquely identifies the question.  Question IDs must be numeric and *_unique across all workbooks_* loaded in a single reviseR session.  Question IDs need not be integers, but this is recommended.
+* QuestionText defines the text that will be presented to the user to pose the question.  The question text must be provided.
+* HelpText defines the optional help text that is displayed to the user after they have chosen their answer and clicked the Submit button.
+* Image is not currently used
+* HelpImage is not currently used
 
 Each row of the Questions worksheet defines a separate question.
 
@@ -113,15 +117,12 @@ First, click Settings in the sidebar menu:
 ![](www/helpQuestionFiles1.png)
 
 Click the Broswe button to select the workbook containing the questions you want to use and click Open:
-
 ![](www/helpQuestionFiles2.png)
 
 reviseR will upload the file and perform basic validation checks.  If the upload is successful and the file is valid, you'll see a dialog like this:
-
 ![](www/helpQuestionFiles3.png)
 
 Otherwise, reviseR will give you a brief summary of the problems it found:
-
 ![](www/helpQuestionFiles4.png)
 
 The box containing the question files will be updated to include the new file.  The questions it contains will be automatically added to the list of available questions.
@@ -137,9 +138,8 @@ reviseR is a work in progress.  It's usable, but it's not perfect.  Problems I k
 
 ### Known problems
 
-*  When doing a timed revision quiz, it is possible to continue to answer questions even after time has expired.
-*  The Next button sometimes remains enabled even when the last question in the quiz is on screen.  Clicking the Next button at this time causes an error, but the app appears to continue to work correctly: for example, the Prev button can be used to return to the final quiz question.
-* The sub-category dropdown box doesn't work.
+*  When doing a timed revsion quiz, it is possible to continue to answer questions even after time has expired.
+*  The Next button sometimes remains enabled even when the last question in the quiz is on screen.  Clicking the Next buttonat this time causes an error, but the app appears to continue to work correctly: for example, the Prev button can be used to return to the final quiz question.
 
 <div style="text-align: right">
 John Kirkpatrick  
