@@ -5,6 +5,10 @@ date: "02/11/2020"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ## About reviseR
 reviseR is a simple Shiny app that I wrote to help me revise for an ITEC examination.  reviseR randomly selects multiple choice questions to present to you as part of your revision.  The questions and answers are defined in Microsoft Excel workbooks.  reviseR is, and always will be, free for personal use.
 

@@ -1,0 +1,12 @@
+name: reviseR
+title: reviseR
+username:
+account: puzzledface
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3188080
+bundleId: 3846601
+url: https://puzzledface.shinyapps.io/reviseR/
+when: 1605083865.82706
+asMultiple: FALSE
+asStatic: FALSE
