@@ -4,6 +4,7 @@ library(tidyverse)
 library(readxl)
 library(lubridate)
 library(shinyjs)
+library(png)
 
 source("functions.R")
 sourceFolder("modules")
@@ -103,16 +104,10 @@ server <- function(input, output, session) {
       disable("timeLimit")
       disable("startButton")
       enable("quitButton")
-      print(session$userData$test$currentQuestion)
-      print(input$nQuestions)
-      print(session$userData$test$currentQuestion == input$nQuestions)
       if (session$userData$test$currentQuestion == input$nQuestions) {
         disable("nextButton")
-        print("Disabled")
-      }
-      else { 
+      } else { 
         enable("nextButton")
-        print("Enabled")
       }
       if (session$userData$test$currentQuestion == 1) disable("prevButton")
       else enable("prevButton")
@@ -186,6 +181,9 @@ server <- function(input, output, session) {
     n <- availableQuestions() %>% nrow()
     m <- input$nQuestions
     updateNumericInput(session, "nQuestions", max=n ,value=min(n, m))
+    selected <- input$categories
+    values <- c("- All -"="", availableQuestions() %>% pull(Category) %>% unique())
+    updateSelectInput(session, "categories", choices=values, selected=selected)
   })
   
   answers <- reactive({
@@ -283,24 +281,20 @@ server <- function(input, output, session) {
   )
 
   observeEvent(input$nextButton, {
-    session$userData$test$currentQuestion <- session$userData$test$currentQuestion + 1
+    if (session$userData$test$currentQuestion < input$nQuestions) session$userData$test$currentQuestion <- session$userData$test$currentQuestion + 1
     setGUIState()
   },
   label="nextButton"
   )
   
   observeEvent(input$prevButton, {
-    session$userData$test$currentQuestion <- session$userData$test$currentQuestion - 1
+    if (session$userData$test$currentQuestion > 1) session$userData$test$currentQuestion <- session$userData$test$currentQuestion - 1
     setGUIState()
   },
   label="prevButton"
   )
   
   observeEvent(questions(), {
-    printDebug("Entry")
-    selected <- input$categories
-    values <- c("- All -"="", questions() %>% pull(Category) %>% unique())
-    updateSelectInput(session, "categories", choices=values, selected=selected)
   },
   label="questionsReactive"
   )
@@ -329,6 +323,25 @@ server <- function(input, output, session) {
     printDebug("currentQuestion: Entry")
     if (!is.na(session$userData$test$currentQuestion)) paste0("\n", session$userData$test$currentQuestion, ": ", currentQuestion()$QuestionText)
   })
+  
+  output$currentQuestionImage <- renderImage({
+    req(currentQuestion()$Image)
+
+    f <- paste0("./www/images/", currentQuestion()$Image)
+    if (file.exists(f)) {
+      im <- readPNG(f, info=TRUE)
+      x <- list(
+        src=paste0("./www/images/", currentQuestion()$Image), 
+        alt=paste0("Unable to locate ", currentQuestion()$Image),
+        width=paste0(attr(im, "info")$dim[1], "px"),
+        height=paste0(attr(im, "info")$dim[2], "px")
+      )
+      print(x)
+      x
+    }
+  },
+  deleteFile=FALSE
+  )
   
   output$currentAnswers <- renderUI({
     printDebug("currentAnswers: Entry")
@@ -438,13 +451,20 @@ server <- function(input, output, session) {
   output$questionPanel <- renderUI({
     printDebug("output$questionPanel: Entry")
     if (!session$userData$test$started) return()
-    tagList(
-      htmlOutput("progress"),
-      uiOutput("currentQuestion"),
-      uiOutput("currentAnswers"),
-      uiOutput("currentHelpText"),
-      uiOutput("navBar")
-    )
+    x <- tagList(
+           htmlOutput("progress"),
+           uiOutput("currentQuestion")
+         )
+    if (!is.na(currentQuestion()$Image)) x <- tagAppendChild(x, plotOutput("currentQuestionImage"))
+    x <- tagAppendChildren(
+           x,
+           list(
+             uiOutput("currentAnswers"),
+             uiOutput("currentHelpText"),
+             uiOutput("navBar")
+           )
+         )
+    x
   })
   
   observeEvent(input$quitButton, {

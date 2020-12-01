@@ -5,8 +5,8 @@ account: puzzledface
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3188080
-bundleId: 3875300
+bundleId: 3877436
 url: https://puzzledface.shinyapps.io/reviseR/
-when: 1605690230.75517
+when: 1605731476.54575
 asMultiple: FALSE
 asStatic: FALSE

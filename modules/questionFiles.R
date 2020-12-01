@@ -46,7 +46,6 @@ questionFilesController <- function(id) {
 
       output$boxes <- renderUI({
         input$fileUpload
-        print("boxes")
         ui <- wellPanel("Select question files to use:")
         lapply(
           v$files, 
